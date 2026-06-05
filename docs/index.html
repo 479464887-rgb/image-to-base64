@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert images to Base64 data URIs for embedding in HTML/CSS. Supports PNG, JPG, GIF, SVG.">
+    <meta name="keywords" content="image to base64, base64 encoder, data URI, image converter, embed image">
+    <meta property="og:title" content="Image to Base64 — DevKit Tools">
+    <meta property="og:description" content="Convert images to Base64 data URIs for embedding in HTML/CSS. Supports PNG, JPG, GIF, SVG.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <title>Image to Base64 — DevKit Tools</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent: #58a6ff;
+            --accent-hover: #79c0ff;
+            --success: #3fb950;
+            --danger: #f85149;
+            --radius: 6px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .header a { color: var(--text); text-decoration: none; font-weight: 600; font-size: 16px; }
+        .header a:hover { color: var(--accent); }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            flex: 1;
+            width: 100%;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #f0f6fc;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+        .card h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #f0f6fc;
+        }
+        textarea, input[type="text"], input[type="number"], select {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+            resize: vertical;
+            transition: border-color 0.15s;
+        }
+        textarea:focus, input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+        }
+        button {
+            background: #238636;
+            color: #fff;
+            border: 1px solid rgba(240, 246, 252, 0.1);
+            border-radius: var(--radius);
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        button:hover { background: #2ea043; }
+        button.secondary {
+            background: var(--surface);
+            border: 1px solid var(--border);
+        }
+        button.secondary:hover { background: #30363d; }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        .feature-tag {
+            background: rgba(88, 166, 255, 0.1);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .output {
+            margin-top: 16px;
+            word-break: break-all;
+        }
+        .footer {
+            text-align: center;
+            padding: 24px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+        }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .copied { color: var(--success); font-size: 12px; margin-left: 8px; opacity: 0; transition: opacity 0.3s; }
+        .copied.show { opacity: 1; }
+        .label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="https://479464887-rgb.github.io/devkit-site/">← DevKit Tools</a>
+        <span style="color:var(--text-secondary);font-size:13px">Image to Base64</span>
+    </div>
+    <div class="container">
+        <h1>Image to Base64</h1>
+        <p class="subtitle">Convert images to Base64 data URIs for embedding in HTML/CSS. Supports PNG, JPG, GIF, SVG.</p>
+        <div class="features">
+            <span class="feature-tag">Drag & drop image upload</span>
+            <span class="feature-tag">Instant Base64 output</span>
+            <span class="feature-tag">Copy to clipboard</span>
+            <span class="feature-tag">Preview image</span>
+        </div>
+        <div class="card">
+            <h2>Tool</h2>
+            <div id="tool-area">
+                
+<div id="drop-zone" style="border:2px dashed var(--border);border-radius:var(--radius);padding:48px;text-align:center;cursor:pointer;transition:border-color 0.2s;margin-bottom:16px;">
+    <div style="font-size:36px;margin-bottom:8px;">🖼️</div>
+    <div style="font-size:14px;color:var(--text-secondary);">Drop image here or click to browse</div>
+    <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Max 10MB · PNG, JPG, GIF, SVG, WebP</div>
+    <input type="file" id="file-input" accept="image/*" style="display:none;">
+</div>
+<div id="preview" style="margin-bottom:12px;text-align:center;"></div>
+<label class="label">Base64 Output</label>
+<textarea id="output" rows="8" placeholder="Base64-encoded image will appear here..." readonly></textarea>
+<button id="copy-btn" style="margin-top:8px;">Copy</button>
+
+            <script>
+
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+const preview = document.getElementById('preview');
+const output = document.getElementById('output');
+const copyBtn = document.getElementById('copy-btn');
+
+dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
+dropZone.addEventListener('dragleave', () => { dropZone.style.borderColor = 'var(--border)'; });
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.style.borderColor = 'var(--border)';
+    const file = e.dataTransfer.files[0];
+    if (file) processFile(file);
+});
+fileInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) processFile(file);
+});
+
+function processFile(file) {
+    if (file.size > 10 * 1024 * 1024) {
+        output.value = 'Error: File too large (max 10MB)';
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        output.value = e.target.result;
+        preview.innerHTML = file.type.startsWith('image/')
+            ? `<img src="${e.target.result}" style="max-width:200px;max-height:200px;border-radius:4px;">`
+            : '';
+    };
+    reader.readAsDataURL(file);
+}
+
+copyBtn.addEventListener('click', () => {
+    if (output.value) {
+        navigator.clipboard.writeText(output.value);
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy', 1500);
+    }
+});
+
+            </script>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <a href="https://479464887-rgb.github.io/devkit-site/privacy.html">Privacy</a> ·
+        <a href="https://479464887-rgb.github.io/devkit-site/terms.html">Terms</a> ·
+        © 2026 DevKit Tools
+    </div>
+    <script>
+    function copyText(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            var orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = orig, 1500);
+        });
+    }
+    </script>
+</body>
+</html>
